@@ -4,8 +4,9 @@ import random
 #___________________________________________________________________________________
 #___________________________________________________________________________________
 class Mage:#la classe du joueur
-    def __init__(self,nom):
+    def __init__(self,player,nom):
 
+        self.__player=player
         self.__nom=nom
         self.__pv=30
         self.__mana=3
@@ -14,6 +15,8 @@ class Mage:#la classe du joueur
         self.__defausse = []
         self.__zone = []
 
+    def getPlayer(self):
+        return self.__player  
     def getNom(self):
         return self.__nom
     def getPV(self):
@@ -21,7 +24,7 @@ class Mage:#la classe du joueur
     def getMana(self):
         return self.__mana
     
-    def setPDV(self,value):
+    def setPV(self,value):
         self.__pv+=value
         if self.__pv<0 :
             return True
@@ -89,3 +92,25 @@ class Cristal(Carte):
         print(self.__description)
         player.setMana(self.__valeur)
 
+
+#___________________________________________________________________________________
+#__Daughter Class
+
+class Creature(Carte):
+    def __init__(self, nom,cout,description,atk,pv):
+        super().__init__(self, nom,cout,description,False)#creature n'est pas un sort
+        self.__atk = atk
+        self.__pv = pv
+    
+    def getPV(self):
+        return self.__pv
+
+    def setPV(self,value):
+        self.__pv+=value
+        if self.__pv<0 :
+            return True
+    
+    def fonction(self,player):
+        cible = int(input("choisissez une cible"))
+        print(self.__description)
+        player.setMana(self.__valeur)
