@@ -1,6 +1,9 @@
+import random
 
 #___________________________________________________________________________________
-class Mage:
+#___________________________________________________________________________________
+#___________________________________________________________________________________
+class Mage:#la classe du joueur
     def __init__(self,nom):
 
         self.__nom=nom
@@ -36,16 +39,53 @@ class Mage:
     def useCarte(self,choix):
         if self.__main[choix].getSort() == True:
             self.__main[choix].fonction()
+            self.setMana(-(self.__main[choix].getCout()))
         else:
             self.setMana(-(self.__main[choix].getCout()))
             self.__zone.extend(self.__main[choix])
             del self.__main[choix]
-    def detruireCarte(self,zone):
-        print(self.__zone[zone].getNom()," est détruit et part dans votre défausse")
-        self.__defausse.extend(self.__zone[zone])
-        del self.__zone[zone]
-
-
+    def detruireCarte(self,choix):
+        print(self.__zone[choix].getNom()," est détruit et part dans votre défausse")
+        self.__defausse.extend(self.__zone[choix])
+        del self.__zone[choix]
+    def jouerCarte(self,choix):
+        if self.__zone[choix].getCout()>self.__mana:#si le cout est trop élévée
+            return True
+        else:
+            self.__zone[choix].fonction(self)
+            self.setMana(-(self.__zone[choix].getCout()))
 
 
 #___________________________________________________________________________________
+#___________________________________________________________________________________
+#___________________________________________________________________________________
+#__Mommy Class
+class Carte:
+    def __init__(self,nom,cout,description,sort):
+
+        self.__nom=nom
+        self.__cout=cout
+        self.__description=description
+        self.__sort=sort
+    
+    def getNom(self):
+        return self.__nom
+    def getCout(self):
+        return self.__cout
+    def getDescription(self):
+        return self.__description
+    def isSort(self):
+        return self.__sort
+
+#___________________________________________________________________________________
+#__Daughter Class
+
+class Cristal(Carte):
+    def __init__(self, nom,cout,description):
+        super().__init__(self, nom,cout,description,False)#cristal n'est pas un sort
+        self.__valeur = 1
+    
+    def fonction(self,player):
+        print(self.__description)
+        player.setMana(self.__valeur)
+
